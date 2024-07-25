@@ -19,7 +19,7 @@ function App() {
           status: "ready",
         };
       default:
-        throw new Error('Action Unknown')
+        throw new Error("Action Unknown");
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState);
