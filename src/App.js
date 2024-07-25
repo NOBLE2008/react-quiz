@@ -2,6 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Header from "./Header";
 import { useEffect, useReducer } from "react";
+import { type } from "@testing-library/user-event/dist/type";
 
 function App() {
   const initialState = {
@@ -18,6 +19,10 @@ function App() {
           questions: action.payload,
           status: "ready",
         };
+        case "dataFailed": return {
+          ...state,
+          status: "error",
+        }
       default:
         throw new Error("Action Unknown");
     }
@@ -28,7 +33,7 @@ function App() {
     function fetch() {
       fetch("http://localhost:3001/questions")
         .then((response) => response.json())
-        .then((data) => dispatch({ type: "dataReceived", payload: data }));
+        .then((data) => dispatch({ type: "dataReceived", payload: data })).catch(err => dispatch({type: 'dataFailed'}));
     }
   }, []);
   return <Header />;
