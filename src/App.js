@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Header from "./Header";
-import { useEffect, useReducer } from "react";
+import { act, useEffect, useReducer } from "react";
 import { type } from "@testing-library/user-event/dist/type";
 import StartScreen from "./StartScreen";
 import Error from "./Error";
@@ -14,7 +14,8 @@ function App() {
     questions: [],
     index: 0,
     status: "loading",
-    answer: null
+    answer: null,
+    points: 0,
   };
 
   function reducer(state, action) {
@@ -25,6 +26,10 @@ function App() {
           questions: action.payload,
           status: "ready",
         };
+        case "answeredCorrectly": return {
+          ...state,
+          points: action.payload,
+        }
         case "dataFailed": return {
           ...state,
           status: "error",
