@@ -3,12 +3,18 @@ import "./App.css";
 import Header from "./Header";
 import { useEffect, useReducer } from "react";
 import { type } from "@testing-library/user-event/dist/type";
+import StartScreen from "./StartScreen";
+import Error from "./Error";
+import Loader from "./Loader";
+import Main from "./Main";
+import Question from "./Question";
 
 function App() {
   const initialState = {
     questions: [],
-
+    index: 0,
     status: "loading",
+    answer: null
   };
 
   function reducer(state, action) {
@@ -23,6 +29,14 @@ function App() {
           ...state,
           status: "error",
         }
+        case "start": return {
+          ...state,
+          status: "active",
+        }
+        case "answer": return {
+         ...state,
+          answer: action.payload,
+        }
       default:
         throw new Error("Action Unknown");
     }
@@ -30,13 +44,24 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
   // Fetch questions from API
   useEffect(function () {
-    function fetch() {
-      fetch("http://localhost:3001/questions")
+    async function fetchData() {
+      await fetch("http://localhost:3001/questions")
         .then((response) => response.json())
         .then((data) => dispatch({ type: "dataReceived", payload: data })).catch(err => dispatch({type: 'dataFailed'}));
     }
+    fetchData()
   }, []);
-  return <Header />;
+  return (
+    <div className="app">
+      <Header/>
+      <Main>
+        {state.status === 'ready' && <StartScreen questions={state.questions} dispatch={dispatch}/>}
+        {state.status === 'error' && <Error/>}
+        {state.status === 'loading' && <Loader/>}
+        {state.status === 'active' && <Question question={state.questions[state.index]} dispatch={dispatch} answer={state.answer}/>}
+      </Main>
+    </div>
+  );
 }
 
 export default App;
