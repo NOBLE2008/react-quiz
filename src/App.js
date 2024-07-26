@@ -28,7 +28,7 @@ function App() {
         };
         case "answeredCorrectly": return {
           ...state,
-          points: action.payload,
+          points: state.points + action.payload,
         }
         case "dataFailed": return {
           ...state,
