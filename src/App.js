@@ -8,6 +8,7 @@ import Error from "./Error";
 import Loader from "./Loader";
 import Main from "./Main";
 import Question from "./Question";
+import NextButton from "./NextButton";
 
 function App() {
   const initialState = {
@@ -29,6 +30,10 @@ function App() {
         case "answeredCorrectly": return {
           ...state,
           points: state.points + action.payload,
+        }
+        case "nextQuestion": return {
+          ...state,
+          index: state.index + 1,
         }
         case "dataFailed": return {
           ...state,
@@ -64,6 +69,7 @@ function App() {
         {state.status === 'error' && <Error/>}
         {state.status === 'loading' && <Loader/>}
         {state.status === 'active' && <Question question={state.questions[state.index]} dispatch={dispatch} answer={state.answer}/>}
+        <NextButton dispatch={dispatch} answer={state.answer}/>
       </Main>
     </div>
   );
