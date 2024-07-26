@@ -34,6 +34,7 @@ function App() {
         case "nextQuestion": return {
           ...state,
           index: state.index + 1,
+          answer: null,
         }
         case "dataFailed": return {
           ...state,
