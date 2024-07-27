@@ -41,6 +41,13 @@ function App() {
           ...state,
           status: "error",
         }
+        case "restart": return{
+          ...state,
+          index: 0,
+          points: 0,
+          answer: null,
+          status: "active",
+        }
         case "start": return {
           ...state,
           status: "active",

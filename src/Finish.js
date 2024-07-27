@@ -5,7 +5,7 @@ export default function Finish({ points, maxPoints, highScore, dispatch }) {
   return (
     <>
       <p className="result">
-        You scored {points} out of {maxPoints}. ({X} percentage)
+        You scored {points} out of {maxPoints}. ({X}%)
       </p>
       <p className="highscore">Highscore: {highScore}</p>
       <button

@@ -15,7 +15,7 @@ export default function NextButton({ dispatch, answer, questions, index }) {
   } else {
     return (
       <button
-        onClick={() => dispatch({ type: "finish" })}
+        onClick={() => dispatch({ type: "finish"  })}
         className="btn btn-ui"
       >
         Finish
