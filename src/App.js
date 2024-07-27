@@ -88,7 +88,12 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Set timer for each question
-
+  useEffect(function () {
+    const timer = setTimeout(function () {
+      dispatch({ type: "tick" });
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
   // Fetch questions from API
   useEffect(function () {
     async function fetchData() {
