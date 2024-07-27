@@ -2,7 +2,6 @@ import logo from "./logo.svg";
 import "./App.css";
 import Header from "./Header";
 import { act, useEffect, useReducer } from "react";
-import { type } from "@testing-library/user-event/dist/type";
 import StartScreen from "./StartScreen";
 import Error from "./Error";
 import Loader from "./Loader";
@@ -48,6 +47,12 @@ function App() {
          ...state,
           answer: action.payload,
         }
+        case "finish": return{
+          ...state,
+          answer: null,
+          status: "finished",
+          index: 0
+        }
       default:
         throw new Error("Action Unknown");
     }
@@ -70,7 +75,7 @@ function App() {
         {state.status === 'error' && <Error/>}
         {state.status === 'loading' && <Loader/>}
         {state.status === 'active' && <Question question={state.questions[state.index]} dispatch={dispatch} answer={state.answer}/>}
-        <NextButton dispatch={dispatch} answer={state.answer}/>
+        <NextButton dispatch={dispatch} answer={state.answer} questions={state.questions}/>
       </Main>
     </div>
   );
