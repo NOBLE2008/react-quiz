@@ -11,6 +11,7 @@ import NextButton from "./NextButton";
 import Finish from "./Finish";
 import Footer from "./Footer";
 import Timer from "./Timer";
+import Progress from "./Progress";
 
 function App() {
   const initialState = {
@@ -89,11 +90,12 @@ function App() {
 
   // Set timer for each question
   useEffect(function () {
-    const timer = setTimeout(function () {
+    const timer = setInterval(function () {
       dispatch({ type: "tick" });
     }, 1000);
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, []);
+
   // Fetch questions from API
   useEffect(function () {
     async function fetchData() {
@@ -118,13 +120,20 @@ function App() {
         {state.status === "loading" && <Loader />}
         {state.status === "active" && (
           <>
+            <Progress
+              maxPoints={maxPoints}
+              answer={state.answer}
+              points={state.points}
+              index={state.index}
+              maxQuestions={state.questions.length}
+            />
             <Question
               question={state.questions[state.index]}
               dispatch={dispatch}
               answer={state.answer}
             />
             <Footer>
-              <Timer secondsRemaining={state.secondsRemaining}/>
+              <Timer secondsRemaining={state.secondsRemaining} />
               <NextButton
                 dispatch={dispatch}
                 answer={state.answer}
