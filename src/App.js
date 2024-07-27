@@ -8,12 +8,14 @@ import Loader from "./Loader";
 import Main from "./Main";
 import Question from "./Question";
 import NextButton from "./NextButton";
+import Finish from "./Finish";
 
 function App() {
   const initialState = {
     questions: [],
     index: 0,
     status: "loading",
+    highScore: 0,
     answer: null,
     points: 0,
   };
@@ -51,7 +53,9 @@ function App() {
           ...state,
           answer: null,
           status: "finished",
-          index: 0
+          index: 0,
+          highScore:
+            state.points > state.highScore ? state.points : state.highScore,
         }
       default:
         throw new Error("Action Unknown");
@@ -67,6 +71,9 @@ function App() {
     }
     fetchData()
   }, []);
+  const maxPoints = state.questions.reduce((prev, cur) => {
+    return prev + cur.points
+  }, 0)
   return (
     <div className="app">
       <Header/>
@@ -75,7 +82,8 @@ function App() {
         {state.status === 'error' && <Error/>}
         {state.status === 'loading' && <Loader/>}
         {state.status === 'active' && <Question question={state.questions[state.index]} dispatch={dispatch} answer={state.answer}/>}
-        <NextButton dispatch={dispatch} answer={state.answer} questions={state.questions}/>
+        {state.status === 'finished' && <Finish points={state.points} dispatch={dispatch} highScore={state.highScore} maxPoints={maxPoints}/>}
+        <NextButton dispatch={dispatch} answer={state.answer} questions={state.questions} index={state.index}/>
       </Main>
     </div>
   );
