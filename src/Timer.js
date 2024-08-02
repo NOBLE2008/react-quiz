@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-export default function Timer({secondsRemaining}) {
+export default function Timer({secondsRemaining, dispatch}) {
     const minutes = Math.floor(secondsRemaining/60)
     const hours = Math.floor(secondsRemaining/3600)
     const seconds = Math.floor(secondsRemaining % 60)
