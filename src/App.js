@@ -15,29 +15,20 @@ import Progress from "./Progress";
 import { useQuiz } from "../context/QuizContext";
 
 function App() {
-
   //Timer Use Effect
 
   // Fetch questions from API
-  const { state, maxPoints } = useQuiz()
+  const { state, maxPoints } = useQuiz();
   return (
     <div className="app">
       <Header />
       <Main>
-        {state.status === "ready" && (
-          <StartScreen questions={state.questions} dispatch={dispatch} />
-        )}
+        {state.status === "ready" && <StartScreen />}
         {state.status === "error" && <Error />}
         {state.status === "loading" && <Loader />}
         {state.status === "active" && (
           <>
-            <Progress
-              maxPoints={maxPoints}
-              answer={state.answer}
-              points={state.points}
-              index={state.index}
-              maxQuestions={state.questions.length}
-            />
+            <Progress />
             <Question
               question={state.questions[state.index]}
               dispatch={dispatch}
